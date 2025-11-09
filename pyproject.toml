@@ -9,6 +9,5 @@ dependencies = [
     "feedparser>=6.0.12",
     "lxml-html-clean>=0.4.3",
     "requests>=2.32.5",
-    "requests-html>=0.10.0",
     "sqlmodel>=0.0.27",
 ]
