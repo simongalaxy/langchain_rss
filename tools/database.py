@@ -36,7 +36,43 @@ def insert_feeds(data: List[Dict]) -> None:
     return
 
 
-# 4. Optional: Query all feeds
+# Query all feeds
 def get_all_feeds() -> List[RSS_Feed]:
     with Session(engine) as session:
         return session.exec(select(RSS_Feed)).all()
+
+
+# Query specific columns from the database
+def query_columns(columns: List[str], where_clause: Optional[Dict[str, any]] = None) -> List[tuple]:
+    """
+    Query specific columns from the RSS_Feed table.
+    
+    Args:
+        columns: List of column names to query (e.g., ["id", "Title", "Feed_URL"])
+        where_clause: Optional dict of column_name: value pairs for filtering
+        
+    Returns:
+        List of tuples containing the queried column values
+        
+    Example:
+        results = query_columns(
+            columns=["Title", "Feed_URL"],
+            where_clause={"Category": "Tech"}
+        )
+    """
+    with Session(engine) as session:
+        # Build the column selection
+        column_attrs = [getattr(RSS_Feed, col) for col in columns]
+        
+        # Create the select statement
+        statement = select(*column_attrs)
+        
+        # Add where conditions if provided
+        if where_clause:
+            for col_name, value in where_clause.items():
+                statement = statement.where(getattr(RSS_Feed, col_name) == value)
+        
+        # Execute and return results
+        results = session.exec(statement).all()
+        
+        return results

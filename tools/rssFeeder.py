@@ -1,5 +1,7 @@
 import feedparser
 from pprint import pprint
+from tools.webscraper import scrape_feed_content
+
 
 # load RSS feeds from RSS link.
 def load_rss_feed(link: str) -> list[dict]:
@@ -21,3 +23,20 @@ def load_rss_feed(link: str) -> list[dict]:
     return rss_feeds
 
 
+# Fetch rss data and store it into databse.
+def fetch_rss_feeds(rss_links: list[str]) -> list[dict]:
+    
+    all_feeds = []
+    
+    # get title, category, publish date and link of all the passages from rss feed.
+    for link in rss_links:
+        feeds = load_rss_feed(link=link)
+        print(f"Total feeds per rss - {link}: {len(feeds)}")
+        
+        # scrape all the passage contents.
+        for feed in feeds:
+            content = scrape_feed_content(news_url=feed["Feed_URL"])
+            feed["Content"]=content
+            all_feeds.append(feed)
+            
+    return all_feeds
