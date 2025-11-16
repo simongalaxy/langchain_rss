@@ -13,7 +13,7 @@ def summarize_feed_content(feeds: list[dict]) -> list[dict]:
     
     # init textsummarizer.
     summarizer = TextSummarizer(
-        model_name="llama3",
+        model_name="tinyllama", # llama3
         temperature=0.3,
         chunk_size=4000
         )
