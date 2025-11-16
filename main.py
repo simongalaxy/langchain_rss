@@ -23,7 +23,9 @@ def summarize_feed_content(feeds: list[dict]) -> list[dict]:
             continue
         summary = summarizer.bullet_point_summary(feed["Content"])
         feed["AI_Summary"]=summary
-        print(f"Summary: {summary}")
+        print("---------------------------------------------------------------\n")
+        print(f"Summary: {summary}\n")
+        print("---------------------------------------------------------------\n")
         
     return feeds
 
